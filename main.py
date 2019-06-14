@@ -1,4 +1,6 @@
+from tkinter import ttk
 import tkinter as tk
+from tkinter.scrolledtext import ScrolledText
 import xlrd
 
 class Application(tk.Frame):
@@ -21,8 +23,24 @@ class Application(tk.Frame):
     def say_hi(self):
         print("hi there, everyone!")
 
+#drawing
 root = tk.Tk()
-canvas = tk.Canvas(root, width=500, height=300)
+
+#tabs
+nb = ttk.Notebook(root)
+page1 = ttk.Frame(nb)
+page2 = ttk.Frame(nb)
+page3 = ttk.Frame(nb)
+page4 = ttk.Frame(nb)
+text = ScrolledText(page2)
+text.pack(expand=1, fill="both")
+nb.add(page1, text='Dashboard 1')
+nb.add(page2, text='Dashboard 2')
+nb.add(page3, text='Dashboard 3')
+nb.add(page4, text='Dashboard 4')
+nb.pack(expand=1, fill="both")
+
+canvas = tk.Canvas(page1, width=500, height=300)
 canvas.pack(fill="both", expand=True)
 canvas.create_arc(50, 50, 200, 200, start=0, extent=180)
 
