@@ -3,54 +3,112 @@ import tkinter as tk
 from tkinter.scrolledtext import ScrolledText
 import xlrd
 
-class Application(tk.Frame):
-    def __init__(self, master=None):
-        super().__init__(master)
-        self.winfo_toplevel().title("Dashboard")
-        self.master = master
-        self.pack()
-        self.create_widgets()
-
-    def create_widgets(self):
-        self.hi_there = tk.Button(self)
-        self.hi_there["text"] = "Hello World\n(click me)"
-        self.hi_there["command"] = self.say_hi
-        self.hi_there.pack(side="top")
-
-        self.quit = tk.Button(self, text="QUIT", fg="red", command=self.master.destroy)
-        self.quit.pack(side="bottom")
-
-    def say_hi(self):
-        print("hi there, everyone!")
-
-#drawing
+WIDTH = 1200
+HEIGHT = 600
 root = tk.Tk()
-
-#tabs
 nb = ttk.Notebook(root)
 page1 = ttk.Frame(nb)
 page2 = ttk.Frame(nb)
 page3 = ttk.Frame(nb)
 page4 = ttk.Frame(nb)
-text = ScrolledText(page2)
-text.pack(expand=1, fill="both")
 nb.add(page1, text='Dashboard 1')
-nb.add(page2, text='Dashboard 2')
+nb.add(page2, text='Environmental')
 nb.add(page3, text='Dashboard 3')
 nb.add(page4, text='Dashboard 4')
 nb.pack(expand=1, fill="both")
+canvas1 = tk.Canvas(page1, width=WIDTH, height=HEIGHT)
+canvas1.pack(fill="both", expand=True)
+canvas2 = tk.Canvas(page2, width=WIDTH, height=HEIGHT)
+canvas2.pack(fill="both", expand=True)
+canvas3 = tk.Canvas(page3, width=WIDTH, height=HEIGHT)
+canvas3.pack(fill="both", expand=True)
+canvas4 = tk.Canvas(page4, width=WIDTH, height=HEIGHT)
+canvas4.pack(fill="both", expand=True)
 
-canvas = tk.Canvas(page1, width=500, height=300)
-canvas.pack(fill="both", expand=True)
-canvas.create_arc(50, 50, 200, 200, start=0, extent=180)
+class Application(tk.Frame):
+    def __init__(self, master=None):
+        super().__init__(master)
+        self.winfo_toplevel().title("IBI Dashboard")
+        self.master = master
+        self.pack()
+        #summer_temp_impact_score = self.get_excel_data("Input_for_Dashboard_for_MD.xlsx", 6, 2, 0)
+        #summer_temp_impact_confidence = self.get_excel_data("Input_for_Dashboard_for_MD.xlsx", 6, 3, 0)
+        self.create_graph(canvas2, 0.13, 0.11, 100, 100, "-2 Far Too Dry", "+2 Far Too Humid")
+        self.create_graph(canvas2, -0.91, 0.11, 500, 100, "-2 Far Too Dry", "+2 Far Too Humid")
+        self.create_graph(canvas2, -0.11, 0.2, 900, 100, "-2 Far Too Dry", "+2 Far Too Humid")
+        self.create_graph(canvas2, -0.5, 1, 100, 400, "-2 Far Too Dry", "+2 Far Too Humid")
+        self.create_graph(canvas2, 1.11, 0.2, 500, 400, "-2 Far Too Dry", "+2 Far Too Humid")
+        self.create_graph(canvas2, -0.61, 0.1, 900, 400, "-2 Far Too Dry", "+2 Far Too Humid")
 
-#excel connection
-workbook = xlrd.open_workbook('data.xlsx')
-sheet = workbook.sheet_by_index(0)
-if sheet.cell(0, 0).value == xlrd.empty_cell.value:
-    print("Empty Cell")
-else:
-    print(sheet.cell(0, 0).value)
+        self.big_brain_graph(canvas1, [45,25,85,100,90,60,30,50], 50, 50)
+
+    def create_graph(self, canvas, median, stdvt, x_pos, y_pos, text_min, text_max): # median: where arrow is pointing, stdvt: standard deviation
+        size = 200
+        text_offset = 110
+        confidence = stdvt * 45
+        mid_point = 90
+        if (median == 0):
+            mid_point = 90
+        elif (median > 0):
+            mid_point = 90 - (median * 45)
+        elif (median < 0):
+            mid_point = (abs(median) * 45) + 90
+
+        canvas.create_arc(x_pos, y_pos, size + x_pos, size + y_pos, start=mid_point - confidence/2, extent=confidence,outline='lightgrey', fill='lightgrey') # standard deviation
+        canvas.create_arc(x_pos, y_pos, size + x_pos, size + y_pos, start=mid_point, extent=0, fill='blue') # median
+        canvas.create_arc(x_pos, y_pos, size + x_pos, size + y_pos, start=0, extent=180) # full graph
+        canvas.create_text(x_pos, y_pos + text_offset,fill="black",font="Times 10 bold", text=text_min)
+        canvas.create_text(x_pos + size, y_pos + text_offset,fill="black",font="Times 10 bold", text=text_max)
+
+    def get_excel_data(self, filename, row, col, sheet_num):
+        workbook = xlrd.open_workbook(filename)
+        sheet = workbook.sheet_by_index(sheet_num)
+        if sheet.cell(row, col).value == xlrd.empty_cell.value:
+            print("Empty Cell")
+        else:
+            return sheet.cell(row, col).value
+
+    def big_brain_graph(self, canvas, values, x_pos, y_pos): # values is a list of 8
+        size = 500
+        original_x = x_pos
+        original_y = y_pos
+        starts = [0,9,23,32,41,59,77,95]
+        extents = [9,14,9,9,18,18,18,5]
+        colours = ['darkgreen','green','lightgreen','orange','lightpink','purple','lightblue','lightgrey']
+        for i in range(8):
+            x = (((values[i] - 0) * (50 - 300)) / (100 - 0)) + 300
+            y = (((values[i] - 0) * (50 - 300)) / (100 - 0)) + 300
+            s = values[i]/100 * 500
+            canvas.create_arc(x, y, s + x, s + y, start=starts[i]*3.6, extent=extents[i]*3.6,fill=colours[i], outline='')
+        
+        canvas.create_arc(x_pos,y_pos,size + x_pos,size + y_pos, start=0, extent=9*3.6, outline='gray',dash=(6, 5, 2, 4))
+        canvas.create_arc(x_pos,y_pos,size + x_pos,size + y_pos, start=9*3.6, extent=14*3.6, outline='gray',dash=(6, 5, 2, 4))
+        canvas.create_arc(x_pos,y_pos,size + x_pos,size + y_pos, start=23*3.6, extent=9*3.6, outline='gray',dash=(6, 5, 2, 4))
+        canvas.create_arc(x_pos,y_pos,size + x_pos,size + y_pos, start=32*3.6, extent=9*3.6, outline='gray',dash=(6, 5, 2, 4))
+        
+        canvas.create_arc(x_pos,y_pos,size + x_pos,size + y_pos, start=41*3.6, extent=18*3.6, outline='gray',dash=(6, 5, 2, 4))
+        canvas.create_arc(x_pos,y_pos,size + x_pos,size + y_pos, start=59*3.6, extent=18*3.6, outline='gray',dash=(6, 5, 2, 4))
+        canvas.create_arc(x_pos,y_pos,size + x_pos,size + y_pos, start=77*3.6, extent=18*3.6, outline='gray',dash=(6, 5, 2, 4))
+        canvas.create_arc(x_pos,y_pos,size + x_pos,size + y_pos, start=95*3.6, extent=5*3.6, outline='gray',dash=(6, 5, 2, 4))
+
+        color = 'gray'
+        for i in range(9):
+            if i == 4:
+                color = 'red'
+            else:
+                color = 'gray'
+            x_pos = x_pos + 25
+            y_pos = y_pos + 25
+            size = size - 50
+            canvas.create_arc(x_pos,y_pos,size + x_pos,size + y_pos, start=0, extent=9*3.6, outline=color,dash=(6, 5, 2, 4))
+            canvas.create_arc(x_pos,y_pos,size + x_pos,size + y_pos, start=9*3.6, extent=14*3.6, outline=color,dash=(6, 5, 2, 4))
+            canvas.create_arc(x_pos,y_pos,size + x_pos,size + y_pos, start=23*3.6, extent=9*3.6, outline=color,dash=(6, 5, 2, 4))
+            canvas.create_arc(x_pos,y_pos,size + x_pos,size + y_pos, start=32*3.6, extent=9*3.6, outline=color,dash=(6, 5, 2, 4))
+            
+            canvas.create_arc(x_pos,y_pos,size + x_pos,size + y_pos, start=41*3.6, extent=18*3.6, outline=color,dash=(6, 5, 2, 4))
+            canvas.create_arc(x_pos,y_pos,size + x_pos,size + y_pos, start=59*3.6, extent=18*3.6, outline=color,dash=(6, 5, 2, 4))
+            canvas.create_arc(x_pos,y_pos,size + x_pos,size + y_pos, start=77*3.6, extent=18*3.6, outline=color,dash=(6, 5, 2, 4))
+            canvas.create_arc(x_pos,y_pos,size + x_pos,size + y_pos, start=95*3.6, extent=5*3.6, outline=color,dash=(6, 5, 2, 4))
 
 app = Application(master=root)
 app.mainloop()
