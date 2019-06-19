@@ -39,9 +39,10 @@ class Application(tk.Frame):
         self.create_graph(canvas2, -0.5, 1, 100, 400, "-2 Far Too Dry", "+2 Far Too Humid")
         self.create_graph(canvas2, 1.11, 0.2, 500, 400, "-2 Far Too Dry", "+2 Far Too Humid")
         self.create_graph(canvas2, -0.61, 0.1, 900, 400, "-2 Far Too Dry", "+2 Far Too Humid")
-
-        self.big_brain_graph(canvas1, [45,25,85,100,90,60,30,50], 50, 50)
-        self.menu_big_brain_graph(canvas1)
+        # [ organizational, environmental, behavioural, engagement, absenteeism, self, org-output, health]
+        self.big_brain_graph(canvas1, [45,25,85,100,90,60,100,50], 50, 50)
+        # [overall, presenteeism, engagement, absenteeism, self, org-output]
+        self.menu_big_brain_graph(canvas1, [45,65,100,76,45,98], [45,65,100,90,45,100])  
 
     def create_graph(self, canvas, median, stdvt, x_pos, y_pos, text_min, text_max): # median: where arrow is pointing, stdvt: standard deviation
         size = 200
@@ -115,24 +116,69 @@ class Application(tk.Frame):
         canvas.create_arc(x_pos,y_pos,size + x_pos,size + y_pos, start=77*3.6, extent=18*3.6, outline='black', width='2')
         canvas.create_arc(x_pos,y_pos,size + x_pos,size + y_pos, start=95*3.6, extent=5*3.6, outline='black', width='2')
  
-    def menu_big_brain_graph(self, canvas):
+    def menu_big_brain_graph(self, canvas, values_past, values_present):
+        canvas.create_line(75,575,150,575, dash=(6, 5, 2, 4), width='1.25')
+        canvas.create_line(250,575,325,575, dash=(6, 5, 2, 4), width='1.25', fill='red')
+        canvas.create_text(200, 575,fill="Black",font="Verdana 8", text='10% Interval')
+        canvas.create_text(400, 575,fill="Black",font="Verdana 8", text='50% or Neutral Impact')
         canvas.create_rectangle(600, 50, 825, 75, fill='lightgrey')
         canvas.create_text(712.5, 62.5,fill="Black",font="Verdana 11 bold", text='Overall Scoring')
+        self.show_values_overall(canvas, values_present[0], values_past[0], 600, 75)
         canvas.create_rectangle(900, 50, 1125, 75, fill='lightgreen')
         canvas.create_text(1012.5, 62.5,fill="Black",font="Verdana 11 bold", text='Presenteeism')
+        self.show_values_category(canvas, values_present[1], values_past[1], 900, 75)
         canvas.create_rectangle(600, 200, 825, 225, fill='orange')
         canvas.create_text(712.5, 212.5,fill="Black",font="Verdana 11 bold", text='Engagement')
+        self.show_values_category(canvas, values_present[2], values_past[2], 600, 225)
         canvas.create_rectangle(900, 200, 1125, 225, fill='lightblue')
         canvas.create_text(1012.5, 212.5,fill="Black",font="Verdana 11 bold", text='Absenteeism')
+        self.show_values_category(canvas, values_present[3], values_past[3], 900, 225)
         canvas.create_rectangle(600, 350, 825, 375, fill='purple')
         canvas.create_text(712.5, 362.5,fill="White",font="Verdana 11 bold", text='Self-Assessment')
+        self.show_values_category(canvas, values_present[4], values_past[4], 600, 375)
         canvas.create_rectangle(900, 350, 1125, 375, fill='lightyellow')
         canvas.create_text(1012.5, 362.5,fill="Black",font="Verdana 11 bold", text='Organizational Outputs')
+        self.show_values_category(canvas, values_present[5], values_past[5], 900, 375)
 
         canvas.create_rectangle(600, 500, 1125, 525, fill='lightgrey')
     
     def show_values_category(self, canvas, present, past, x_pos, y_pos):
-        
+        color_circle = 'white'
+        color_up = 'white'
+        color_down = 'white'
+
+        if (past != '-'):
+            if (present == past):
+                color_circle = 'yellow'
+            elif (present > past):
+                color_up = 'green'
+            elif (present < past):
+                color_down = 'red'
+        else:
+            color_circle = 'yellow'
+
+        canvas.create_oval(x_pos + 100, y_pos + 50, x_pos + 125, y_pos + 75, fill=color_circle)
+        canvas.create_polygon(x_pos + 100, y_pos + 45, x_pos + 125, y_pos + 45, x_pos + 112.5, y_pos + 25, fill=color_up, outline='black')
+        canvas.create_polygon(x_pos + 100, y_pos + 80, x_pos + 125, y_pos + 80, x_pos + 112.5, y_pos + 100, fill=color_down, outline='black')
+        canvas.create_text(x_pos + 56.75, y_pos + 60, fill="Black", font="Verdana 11 bold", text=past)
+        canvas.create_text(x_pos + 56.75, y_pos + 80, fill="Black", font="Verdana 8", text='past')
+        canvas.create_text(x_pos + 169.25, y_pos + 60, fill="Black", font="Verdana 11 bold", text=present)
+        canvas.create_text(x_pos + 169.25, y_pos + 80, fill="Black", font="Verdana 8", text='present')
+    
+    def show_values_overall(self, canvas, present, past, x_pos, y_pos):
+        color = 'white'
+        delta = present - past
+        if (present == past):
+            color = 'yellow'
+        elif (present > past):
+            color = 'green'
+        elif (present < past):
+            color = 'red'
+            
+        canvas.create_text(x_pos + 56.75, y_pos + 60, fill="Black", font="Verdana 18 bold", text=past)
+        canvas.create_text(x_pos + 56.75, y_pos + 80, fill="Black", font="Verdana 8", text='total')
+        canvas.create_text(x_pos + 169.25, y_pos + 60, fill=color, font="Verdana 18 bold", text=delta)
+        canvas.create_text(x_pos + 169.25, y_pos + 80, fill="Black", font="Verdana 8", text='delta')
 
 app = Application(master=root)
 app.mainloop()
