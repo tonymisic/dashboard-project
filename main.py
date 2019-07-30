@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter.scrolledtext import ScrolledText
 import xlrd
 from PIL import Image, ImageTk
+from datetime import datetime
 
 WIDTH = 1200
 HEIGHT = 700
@@ -25,32 +26,54 @@ canvas3 = tk.Canvas(page3, width=WIDTH, height=HEIGHT)
 canvas3.pack(fill="both", expand=True)
 canvas4 = tk.Canvas(page4, width=WIDTH, height=HEIGHT)
 canvas4.pack(fill="both", expand=True)
-# variables from excel sheet
-
+# excel sheet
 workbook = xlrd.open_workbook("Input_for_Dashboard_for_MD.xlsx")
 sheet = workbook.sheet_by_index(0)
-summerTempImpactConfidence = sheet.cell(6, 3).value 
-summerTempImpactScore = sheet.cell(6, 3).value
 
-#if sheet.cell(6, 3).value == xlrd.empty_cell.value:
-#    print("Empty Cell")
-#else:
-    #summer_temp_impact_score = sheet.cell(6, 3).value
-#if sheet.cell(6, 3).value == xlrd.empty_cell.value:
-#    print("Empty Cell")
-#else:
-    #summer_temp_impact_score = sheet.cell(6, 3).value
+# previous information, orgname, dates.
+organizationName = sheet.cell(5, 11).value
+pdc = int(sheet.cell(8, 11).value)
+dt = str(datetime.fromordinal(datetime(1900, 1, 1).toordinal() + pdc - 2))
+now = str(datetime.now())
+currentDate = now[8:10]+ "/" + now[5:7] + "/" + now[0:4]
+previousDateOfCompletion = dt[8:10] + "/" + dt[5:7] + "/" + dt[0:4]
+previousOverallScore = float(sheet.cell(11, 11).value)
+previousEngagement = float(sheet.cell(14, 11).value)
+previousPresenteeism = float(sheet.cell(17, 11).value)
+previousAbsenteeism = float(sheet.cell(20, 11).value)
+previousSelfAssessment = float(sheet.cell(23, 11).value)
+previousOrgOutput = float(sheet.cell(26, 11).value)
+
+# variables
+presenteeism = round(float(sheet.cell(4,2).value), 2)
+engagement = round(float(sheet.cell(32,2).value), 2)
+absenteeism = round(float(sheet.cell(48,2).value), 2)
+selfAssessment = round(float(sheet.cell(45,2).value), 2)
+orgOutput = round(float(sheet.cell(49,2).value), 2)
+organizational = round(float(sheet.cell(26,2).value), 2)
+environmental = round(float(sheet.cell(5,2).value), 2)
+behavioural = round(float(sheet.cell(30,2).value), 2)
+health = round(float(sheet.cell(31,2).value), 2)
+
+tempImpactSummerScore = round(float(sheet.cell(31,2).value), 2)
+tempImpactWinterScore = round(float(sheet.cell(31,2).value), 2)
+tempImpactSpringScore = round(float(sheet.cell(31,2).value), 2)
+tempCondSummerScore = round(float(sheet.cell(31,2).value), 2)
+tempCondWinterScore = round(float(sheet.cell(31,2).value), 2)
+tempCondSpringScore = round(float(sheet.cell(31,2).value), 2)
+
 
 class Application(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
-        self.winfo_toplevel().title("Organization 1's Dashboard")
+        title = organizationName + "'s Dashboard"
+        self.winfo_toplevel().title(title)
         self.master = master
         self.pack()
         
         # canvas 2
         self.show_image(canvas2, 'background2.jpg', 600, 350)
-        self.create_graph(canvas2, 1, 0.54, 95, 266)
+        self.create_graph(canvas2, 1, 0.5, 95, 266)
         self.create_graph(canvas2, -0.91, 0.11, 364, 266)
         self.create_graph(canvas2, -0.11, 0.2, 633, 266)
         self.create_graph(canvas2, -0.5, 1, 95, 455)
@@ -60,8 +83,8 @@ class Application(tk.Frame):
         self.create_graph(canvas2, 1.11, 0.2, 905, 266)
         self.create_graph(canvas2, -0.61, 0.1, 905, 455)
 
-        canvas2.create_text(70, 612, fill="Black", font="Verdana 13", text="Organization 1", anchor="w")
-        canvas2.create_text(70, 132, fill="Black", font="Verdana 40", text="54.76", anchor="sw") # add code for it to be 2 decimal points always
+        canvas2.create_text(70, 612, fill="Black", font="Verdana 13", text=organizationName, anchor="w")
+        canvas2.create_text(70, 132, fill="Black", font="Verdana 40", text=environmental, anchor="sw") # add code for it to be 2 decimal points always
         canvas2.create_text(230, 132, fill="Black", font="Verdana 20", text="/100", anchor="sw")
 
         canvas2.create_text(195, 248, fill="Black", font="Verdana 13", text="1")
@@ -76,18 +99,18 @@ class Application(tk.Frame):
         canvas2.create_text(1005, 248, fill="Black", font="Verdana 13", text="1.11")
         canvas2.create_text(1005, 437, fill="Black", font="Verdana 13", text="-0.61")
 
-        canvas2.create_text(183, 632, fill="Black", font="Verdana 8", text="05/12/2018", anchor="w")
-        canvas2.create_text(183, 650, fill="Black", font="Verdana 8", text="16/07/2019", anchor="w")
+        canvas2.create_text(183, 632, fill="Black", font="Verdana 8", text=previousDateOfCompletion, anchor="w")
+        canvas2.create_text(183, 650, fill="Black", font="Verdana 8", text=currentDate, anchor="w")
 
-        #canvas 1
+        # canvas 1 DONE
         self.show_image(canvas1, 'background1.jpg', 600, 375)
         # [ organizational, environmental, behavioural, engagement, absenteeism, self, org-output, health]
-        self.big_brain_graph(canvas1, [45,25,85,100,90,60,100,50], 50, 50)
+        self.big_brain_graph(canvas1, [organizational,environmental,behavioural,engagement,absenteeism,selfAssessment,orgOutput,health], 50, 50)
         # [overall, presenteeism, engagement, absenteeism, self, org-output]
-        self.menu_big_brain_graph(canvas1, [45,65,100,76,45,98], [45,65,100,90,45,100])
-        canvas1.create_text(60, 622, fill="Black", font="Verdana 13", text="Organization 1", anchor="w")
-        canvas1.create_text(180, 640, fill="Black", font="Verdana 8", text="05/12/2018", anchor="w")
-        canvas1.create_text(180, 659, fill="Black", font="Verdana 8", text="16/07/2019", anchor="w")
+        self.menu_big_brain_graph(canvas1, [previousOverallScore,previousPresenteeism,previousEngagement,previousAbsenteeism,previousSelfAssessment,previousOrgOutput], [45,presenteeism,engagement,absenteeism,selfAssessment,orgOutput])
+        canvas1.create_text(60, 622, fill="Black", font="Verdana 13", text=organizationName, anchor="w")
+        canvas1.create_text(180, 640, fill="Black", font="Verdana 8", text=previousDateOfCompletion, anchor="w")
+        canvas1.create_text(180, 659, fill="Black", font="Verdana 8", text=currentDate, anchor="w")
         
         #canvas 3
         self.show_image(canvas3, 'background3.jpg', 600, 350)
@@ -110,10 +133,9 @@ class Application(tk.Frame):
         canvas3.create_text(206, 379, fill="Black", font="Verdana 13", text="-0.91")
         canvas3.create_text(455, 172, fill="Black", font="Verdana 13", text="-0.11")
         canvas3.create_text(455, 379, fill="Black", font="Verdana 13", text="-0.52")
-
-        canvas3.create_text(70, 612, fill="Black", font="Verdana 13", text="Organization 1", anchor="w")
-        canvas3.create_text(183, 632, fill="Black", font="Verdana 8", text="05/12/2018", anchor="w")
-        canvas3.create_text(183, 650, fill="Black", font="Verdana 8", text="16/07/2019", anchor="w")
+        canvas3.create_text(70, 612, fill="Black", font="Verdana 13", text=organizationName, anchor="w")
+        canvas3.create_text(183, 632, fill="Black", font="Verdana 8", text=previousDateOfCompletion, anchor="w")
+        canvas3.create_text(183, 650, fill="Black", font="Verdana 8", text=currentDate, anchor="w")
 
         #canvas 4
         self.show_image(canvas4, 'background4.jpg', 600, 350)
@@ -147,9 +169,9 @@ class Application(tk.Frame):
         self.create_graph(canvas4, 1.11, 0.2, 905, 103)
         self.create_graph(canvas4, -0.61, 0.1, 905, 384)
 
-        canvas4.create_text(70, 612, fill="Black", font="Verdana 13", text="Organization 1", anchor="w")
-        canvas4.create_text(183, 632, fill="Black", font="Verdana 8", text="05/12/2018", anchor="w")
-        canvas4.create_text(183, 650, fill="Black", font="Verdana 8", text="16/07/2019", anchor="w")
+        canvas4.create_text(70, 612, fill="Black", font="Verdana 13", text=organizationName, anchor="w")
+        canvas4.create_text(183, 632, fill="Black", font="Verdana 8", text=previousDateOfCompletion, anchor="w")
+        canvas4.create_text(183, 650, fill="Black", font="Verdana 8", text=currentDate, anchor="w")
         
     def create_graph(self, canvas, median, stdvt, x_pos, y_pos): # median: where arrow is pointing, stdvt: standard deviation
         size = 200
