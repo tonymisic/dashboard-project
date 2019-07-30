@@ -12,10 +12,10 @@ page1 = ttk.Frame(nb)
 page2 = ttk.Frame(nb)
 page3 = ttk.Frame(nb)
 page4 = ttk.Frame(nb)
-nb.add(page1, text='Fresh Pie')
+nb.add(page1, text='Overall')
 nb.add(page2, text='Environmental')
-nb.add(page3, text='Dashboard 3')
-nb.add(page4, text='Dashboard 4')
+nb.add(page3, text='Organization')
+nb.add(page4, text='Engagement')
 nb.pack(expand=1, fill="both")
 canvas1 = tk.Canvas(page1, width=WIDTH, height=HEIGHT)
 canvas1.pack(fill="both", expand=True)
@@ -25,6 +25,21 @@ canvas3 = tk.Canvas(page3, width=WIDTH, height=HEIGHT)
 canvas3.pack(fill="both", expand=True)
 canvas4 = tk.Canvas(page4, width=WIDTH, height=HEIGHT)
 canvas4.pack(fill="both", expand=True)
+# variables from excel sheet
+
+workbook = xlrd.open_workbook("Input_for_Dashboard_for_MD.xlsx")
+sheet = workbook.sheet_by_index(0)
+summerTempImpactConfidence = sheet.cell(6, 3).value 
+summerTempImpactScore = sheet.cell(6, 3).value
+
+#if sheet.cell(6, 3).value == xlrd.empty_cell.value:
+#    print("Empty Cell")
+#else:
+    #summer_temp_impact_score = sheet.cell(6, 3).value
+#if sheet.cell(6, 3).value == xlrd.empty_cell.value:
+#    print("Empty Cell")
+#else:
+    #summer_temp_impact_score = sheet.cell(6, 3).value
 
 class Application(tk.Frame):
     def __init__(self, master=None):
@@ -32,9 +47,8 @@ class Application(tk.Frame):
         self.winfo_toplevel().title("Organization 1's Dashboard")
         self.master = master
         self.pack()
-        #summer_temp_impact_score = self.get_excel_data("Input_for_Dashboard_for_MD.xlsx", 6, 2, 0)
-        #summer_temp_impact_confidence = self.get_excel_data("Input_for_Dashboard_for_MD.xlsx", 6, 3, 0)
-        # !!! needs to be connected to the excel sheet !!!
+        
+        # canvas 2
         self.show_image(canvas2, 'background2.jpg', 600, 350)
         self.create_graph(canvas2, 1, 0.54, 95, 266)
         self.create_graph(canvas2, -0.91, 0.11, 364, 266)
@@ -65,11 +79,77 @@ class Application(tk.Frame):
         canvas2.create_text(183, 632, fill="Black", font="Verdana 8", text="05/12/2018", anchor="w")
         canvas2.create_text(183, 650, fill="Black", font="Verdana 8", text="16/07/2019", anchor="w")
 
+        #canvas 1
         self.show_image(canvas1, 'background1.jpg', 600, 375)
         # [ organizational, environmental, behavioural, engagement, absenteeism, self, org-output, health]
         self.big_brain_graph(canvas1, [45,25,85,100,90,60,100,50], 50, 50)
         # [overall, presenteeism, engagement, absenteeism, self, org-output]
-        self.menu_big_brain_graph(canvas1, [45,65,100,76,45,98], [45,65,100,90,45,100])  
+        self.menu_big_brain_graph(canvas1, [45,65,100,76,45,98], [45,65,100,90,45,100])
+        canvas1.create_text(60, 622, fill="Black", font="Verdana 13", text="Organization 1", anchor="w")
+        canvas1.create_text(180, 640, fill="Black", font="Verdana 8", text="05/12/2018", anchor="w")
+        canvas1.create_text(180, 659, fill="Black", font="Verdana 8", text="16/07/2019", anchor="w")
+        
+        #canvas 3
+        self.show_image(canvas3, 'background3.jpg', 600, 350)
+
+        canvas3.create_text(70, 85, fill="Black", font="Verdana 18 bold", text="78.89", anchor="w")
+        canvas3.create_text(160, 91, fill="Black", font="Verdana 15 bold", text="/100", anchor="w")
+        canvas3.create_text(611, 85, fill="Black", font="Verdana 18 bold", text="78.89", anchor="w")
+        canvas3.create_text(701, 91, fill="Black", font="Verdana 15 bold", text="/100", anchor="w")
+        canvas3.create_text(880, 85, fill="Black", font="Verdana 18 bold", text="78.89", anchor="w")
+        canvas3.create_text(970, 91, fill="Black", font="Verdana 15 bold", text="/100", anchor="w")
+
+        self.create_graph(canvas3, -0.9, 0.2, 106, 190)
+        self.create_graph(canvas3, -0.61, 0.1, 106, 398)
+        self.create_graph(canvas3, 1.11, 0.2, 351, 190)
+        self.create_graph(canvas3, -0.61, 0.1, 351, 398)
+        self.create_graph(canvas3, -0.5, 0.2, 633, 190)
+        self.create_graph(canvas3, -0.61, 0.1, 905, 190)
+        
+        canvas3.create_text(206, 172, fill="Black", font="Verdana 13", text="1.08")
+        canvas3.create_text(206, 379, fill="Black", font="Verdana 13", text="-0.91")
+        canvas3.create_text(455, 172, fill="Black", font="Verdana 13", text="-0.11")
+        canvas3.create_text(455, 379, fill="Black", font="Verdana 13", text="-0.52")
+
+        canvas3.create_text(70, 612, fill="Black", font="Verdana 13", text="Organization 1", anchor="w")
+        canvas3.create_text(183, 632, fill="Black", font="Verdana 8", text="05/12/2018", anchor="w")
+        canvas3.create_text(183, 650, fill="Black", font="Verdana 8", text="16/07/2019", anchor="w")
+
+        #canvas 4
+        self.show_image(canvas4, 'background4.jpg', 600, 350)
+        canvas4.create_text(70, 71, fill="Black", font="Verdana 15 bold", text="78.89", anchor="w")
+        canvas4.create_text(140, 77, fill="Black", font="Verdana 13 bold", text="/100", anchor="w")
+        canvas4.create_text(611, 71, fill="Black", font="Verdana 15 bold", text="78.89", anchor="w")
+        canvas4.create_text(681, 77, fill="Black", font="Verdana 13 bold", text="/100", anchor="w")
+        canvas4.create_text(880, 71, fill="Black", font="Verdana 15 bold", text="78.89", anchor="w")
+        canvas4.create_text(951, 77, fill="Black", font="Verdana 13 bold", text="/100", anchor="w")
+        canvas4.create_text(880, 352, fill="Black", font="Verdana 15 bold", text="78.89", anchor="w")
+        canvas4.create_text(951, 358, fill="Black", font="Verdana 13 bold", text="/100", anchor="w")
+
+        canvas4.create_text(150, 175, fill="Black", font="Verdana 19 bold", text="53.4")
+        canvas4.create_text(329, 175, fill="Black", font="Verdana 19 bold", text="23.4")
+        canvas4.create_text(505, 175, fill="Black", font="Verdana 19 bold", text="78.89")
+
+        canvas4.create_text(150, 307, fill="Black", font="Verdana 19", text="28.4")
+        canvas4.create_text(150, 422, fill="Black", font="Verdana 19", text="34.4")
+        canvas4.create_text(150, 536, fill="Black", font="Verdana 19", text="56.89")
+        
+        canvas4.create_text(329, 307, fill="Black", font="Verdana 19", text="28.4")
+        canvas4.create_text(329, 422, fill="Black", font="Verdana 19", text="34.4")
+        canvas4.create_text(329, 536, fill="Black", font="Verdana 19", text="56.89")
+        
+        canvas4.create_text(505, 305, fill="Black", font="Verdana 19", text="28.4")
+        canvas4.create_text(505, 422, fill="Black", font="Verdana 19", text="34.4")
+        canvas4.create_text(505, 536, fill="Black", font="Verdana 19", text="56.89")
+
+        self.create_graph(canvas4, 1.11, 0.2, 633, 168)
+        self.create_graph(canvas4, -0.61, 0.1, 633, 346)
+        self.create_graph(canvas4, 1.11, 0.2, 905, 103)
+        self.create_graph(canvas4, -0.61, 0.1, 905, 384)
+
+        canvas4.create_text(70, 612, fill="Black", font="Verdana 13", text="Organization 1", anchor="w")
+        canvas4.create_text(183, 632, fill="Black", font="Verdana 8", text="05/12/2018", anchor="w")
+        canvas4.create_text(183, 650, fill="Black", font="Verdana 8", text="16/07/2019", anchor="w")
         
     def create_graph(self, canvas, median, stdvt, x_pos, y_pos): # median: where arrow is pointing, stdvt: standard deviation
         size = 200
@@ -86,14 +166,6 @@ class Application(tk.Frame):
         canvas.create_arc(x_pos, y_pos, size + x_pos, size + y_pos, start=mid_point - confidence/2, extent=confidence,outline='lightgrey', fill='lightgrey') # standard deviation
         canvas.create_arc(x_pos, y_pos, size + x_pos, size + y_pos, start=mid_point, extent=0, fill='blue') # median
         canvas.create_arc(x_pos, y_pos, size + x_pos, size + y_pos, start=0, extent=180) # full graph
-
-    def get_excel_data(self, filename, row, col, sheet_num):
-        workbook = xlrd.open_workbook(filename)
-        sheet = workbook.sheet_by_index(sheet_num)
-        if sheet.cell(row, col).value == xlrd.empty_cell.value:
-            print("Empty Cell")
-        else:
-            return sheet.cell(row, col).value
 
     def big_brain_graph(self, canvas, values, x_pos, y_pos): # values is a list of 8
         size = 500
