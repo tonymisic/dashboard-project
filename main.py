@@ -55,12 +55,33 @@ environmental = round(float(sheet.cell(5,2).value), 2)
 behavioural = round(float(sheet.cell(30,2).value), 2)
 health = round(float(sheet.cell(31,2).value), 2)
 
-tempImpactSummerScore = round(float(sheet.cell(31,2).value), 2)
-tempImpactWinterScore = round(float(sheet.cell(31,2).value), 2)
-tempImpactSpringScore = round(float(sheet.cell(31,2).value), 2)
-tempCondSummerScore = round(float(sheet.cell(31,2).value), 2)
-tempCondWinterScore = round(float(sheet.cell(31,2).value), 2)
-tempCondSpringScore = round(float(sheet.cell(31,2).value), 2)
+# environment
+tempImpactSummerScore = round(float(sheet.cell(6,2).value), 2)
+tempImpactWinterScore = round(float(sheet.cell(7,2).value), 2)
+tempImpactSpringScore = round(float(sheet.cell(8,2).value), 2)
+tempImpactFallScore = round(float(sheet.cell(9,2).value), 2)
+
+tempCondSummerScore = round(float(sheet.cell(10,2).value), 2)
+tempCondWinterScore = round(float(sheet.cell(11,2).value), 2)
+tempCondSpringScore = round(float(sheet.cell(12,2).value), 2)
+tempCondFallScore = round(float(sheet.cell(13,2).value), 2)
+
+humidityImpactSummer = round(float(sheet.cell(14,2).value), 2)
+humidityImpactWinter = round(float(sheet.cell(15,2).value), 2)
+humidityImpactSpring = round(float(sheet.cell(16,2).value), 2)
+humidityImpactFall =  round(float(sheet.cell(17,2).value), 2)
+
+humidityCondSummer = round(float(sheet.cell(18,2).value), 2)
+humidityCondWinter = round(float(sheet.cell(19,2).value), 2)
+humidityCondSpring = round(float(sheet.cell(20,2).value), 2)
+humidityCondFall = round(float(sheet.cell(21,2).value), 2)
+
+noiseImpact = round(float(sheet.cell(22,2).value), 2)
+noiseCondition = round(float(sheet.cell(23,2).value), 2) 
+lightImpact = round(float(sheet.cell(24,2).value), 2) 
+lightCondition = round(float(sheet.cell(25,2).value), 2) 
+
+tempCondSummerConfidence = round(float(sheet.cell(10,3).value), 2)
 
 
 class Application(tk.Frame):
@@ -73,7 +94,7 @@ class Application(tk.Frame):
         
         # canvas 2
         self.show_image(canvas2, 'background2.jpg', 600, 350)
-        self.create_graph(canvas2, 1, 0.5, 95, 266)
+        self.create_graph(canvas2, tempCondSummerScore, tempCondSummerConfidence, 95, 266)
         self.create_graph(canvas2, -0.91, 0.11, 364, 266)
         self.create_graph(canvas2, -0.11, 0.2, 633, 266)
         self.create_graph(canvas2, -0.5, 1, 95, 455)
@@ -87,7 +108,7 @@ class Application(tk.Frame):
         canvas2.create_text(70, 132, fill="Black", font="Verdana 40", text=environmental, anchor="sw") # add code for it to be 2 decimal points always
         canvas2.create_text(230, 132, fill="Black", font="Verdana 20", text="/100", anchor="sw")
 
-        canvas2.create_text(195, 248, fill="Black", font="Verdana 13", text="1")
+        canvas2.create_text(195, 248, fill="Black", font="Verdana 13", text=tempImpactSummerScore)
         canvas2.create_text(464, 248, fill="Black", font="Verdana 13", text="-0.91")
         canvas2.create_text(733, 248, fill="Black", font="Verdana 13", text="-0.11")
 
