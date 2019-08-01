@@ -25,6 +25,10 @@ canvas3 = tk.Canvas(page3, width=WIDTH, height=HEIGHT)
 canvas3.pack(fill="both", expand=True)
 canvas4 = tk.Canvas(page4, width=WIDTH, height=HEIGHT)
 canvas4.pack(fill="both", expand=True)
+
+def scaleBetween(unscaledNum):
+    return round(((4 * unscaledNum) / (100)) - 2, 2)
+
 # excel sheet
 workbook = xlrd.open_workbook("Input_for_Dashboard_for_MD.xlsx")
 sheet = workbook.sheet_by_index(0)
@@ -55,6 +59,9 @@ behavioural = round(float(sheet.cell(30,2).value), 2)
 health = round(float(sheet.cell(31,2).value), 2)
 overallScore = round(float(45), 2) ## To Do
 
+behaviouralConfidence = round(float(sheet.cell(30,3).value), 2)
+healthConfidence = round(float(sheet.cell(31,3).value), 2)
+
 # environment
 tempImpactSummerScore = round(float(sheet.cell(6,2).value), 2)
 tempImpactWinterScore = round(float(sheet.cell(7,2).value), 2)
@@ -78,8 +85,10 @@ humidityCondFall = round(float(sheet.cell(21,2).value), 2)
 
 noiseImpact = round(float(sheet.cell(22,2).value), 2)
 noiseCondition = round(float(sheet.cell(23,2).value), 2) 
-lightImpact = round(float(sheet.cell(24,2).value), 2) 
-lightCondition = round(float(sheet.cell(25,2).value), 2) 
+artificialLightImpact = round(float(sheet.cell(24,2).value), 2) 
+artificialLightCondition = round(float(sheet.cell(25,2).value), 2) 
+naturalLightImpact = round(float(sheet.cell(24,2).value), 2) 
+naturalLightCondition = round(float(sheet.cell(25,2).value), 2) # no value in excel, currently a duplicate
 
 tempCondSummerConfidence = round(float(sheet.cell(10,3).value), 2)
 
@@ -102,13 +111,12 @@ qualityOfWorkConfidence = round(float(sheet.cell(46,3).value), 2)
 volumeOfWorkScore = round(float(sheet.cell(47,2).value), 2)
 volumeOfWorkConfidence = round(float(sheet.cell(47,3).value), 2)
 
-seperationScore = round(float(sheet.cell(46,2).value), 2)
-seperationConfidence = round(float(sheet.cell(47,3).value), 2)
-hierarchyScore = round(float(sheet.cell(46,2).value), 2)
-hierarchyConfidence = round(float(sheet.cell(47,3).value), 2)
-directionScore = round(float(sheet.cell(46,2).value), 2)
-directionConfidence = round(float(sheet.cell(47,3).value), 2)
-
+seperationScore = scaleBetween(round(float(sheet.cell(27,2).value), 2))
+seperationConfidence = round(float(sheet.cell(27,3).value), 2)
+hierarchyScore = scaleBetween(round(float(sheet.cell(28,2).value), 2))
+hierarchyConfidence = round(float(sheet.cell(28,3).value), 2)
+directionScore = scaleBetween(round(float(sheet.cell(29,2).value), 2))
+directionConfidence = round(float(sheet.cell(29,3).value), 2)
 
 class Application(tk.Frame):
     def __init__(self, master=None):
@@ -131,20 +139,20 @@ class Application(tk.Frame):
         self.create_graph(canvas2, -0.61, 0.1, 905, 455)
 
         canvas2.create_text(70, 612, fill="Black", font="Verdana 13", text=organizationName, anchor="w")
-        canvas2.create_text(70, 132, fill="Black", font="Verdana 40", text=environmental, anchor="sw") # add code for it to be 2 decimal points always
+        canvas2.create_text(70, 132, fill="Black", font="Verdana 40", text=environmental, anchor="sw")
         canvas2.create_text(230, 132, fill="Black", font="Verdana 20", text="/100", anchor="sw")
 
-        canvas2.create_text(195, 248, fill="Black", font="Verdana 13", text=tempImpactSummerScore)
-        canvas2.create_text(464, 248, fill="Black", font="Verdana 13", text="-0.91")
-        canvas2.create_text(733, 248, fill="Black", font="Verdana 13", text="-0.11")
+        canvas2.create_text(195, 248, fill="Black", font="Verdana 13", text=humidityImpactSummer) # might need to be labeled better
+        canvas2.create_text(464, 248, fill="Black", font="Verdana 13", text=humidityImpactWinter)
+        canvas2.create_text(733, 248, fill="Black", font="Verdana 13", text=humidityImpactSpring) # might need to average
 
-        canvas2.create_text(195, 437, fill="Black", font="Verdana 13", text="-0.5")
-        canvas2.create_text(464, 437, fill="Black", font="Verdana 13", text="1.11")
-        canvas2.create_text(733, 437, fill="Black", font="Verdana 13", text="-0.61")
+        canvas2.create_text(195, 437, fill="Black", font="Verdana 13", text=tempImpactSummerScore)
+        canvas2.create_text(464, 437, fill="Black", font="Verdana 13", text=tempImpactWinterScore)
+        canvas2.create_text(733, 437, fill="Black", font="Verdana 13", text=tempImpactSpringScore)
 
-        canvas2.create_text(1005, 63, fill="Black", font="Verdana 13", text="-0.5")
-        canvas2.create_text(1005, 248, fill="Black", font="Verdana 13", text="1.11")
-        canvas2.create_text(1005, 437, fill="Black", font="Verdana 13", text="-0.61")
+        canvas2.create_text(1005, 63, fill="Black", font="Verdana 13", text=noiseImpact)
+        canvas2.create_text(1005, 248, fill="Black", font="Verdana 13", text=artificialLightImpact)
+        canvas2.create_text(1005, 437, fill="Black", font="Verdana 13", text=naturalLightImpact)
 
         canvas2.create_text(183, 632, fill="Black", font="Verdana 8", text=previousDateOfCompletion, anchor="w")
         canvas2.create_text(183, 650, fill="Black", font="Verdana 8", text=currentDate, anchor="w")
@@ -169,14 +177,14 @@ class Application(tk.Frame):
         canvas3.create_text(880, 85, fill="Black", font="Verdana 18 bold", text=health, anchor="w")
         canvas3.create_text(970, 91, fill="Black", font="Verdana 15 bold", text="/100", anchor="w")
 
-        self.create_graph(canvas3, -0.9, 0.2, 106, 190)
-        self.create_graph(canvas3, -0.61, 0.1, 106, 398)
-        self.create_graph(canvas3, 1.11, 0.2, 351, 190)
-        self.create_graph(canvas3, -0.61, 0.1, 351, 398)
-        self.create_graph(canvas3, -0.5, 0.2, 633, 190)
-        self.create_graph(canvas3, -0.61, 0.1, 905, 190)
+        self.create_graph(canvas3, seperationScore, seperationConfidence, 106, 190)
+        self.create_graph(canvas3, directionScore, directionConfidence, 106, 398)
+        self.create_graph(canvas3, hierarchyScore, hierarchyConfidence, 351, 190)
+        self.create_graph(canvas3, -0.61, 0.1, 351, 398) # not sure if we need this
+        self.create_graph(canvas3, scaleBetween(behavioural), behaviouralConfidence, 633, 190)
+        self.create_graph(canvas3, scaleBetween(health), healthConfidence, 905, 190)
         
-        canvas3.create_text(206, 172, fill="Black", font="Verdana 13", text="1.08")
+        canvas3.create_text(206, 172, fill="Black", font="Verdana 13", text="1.08") # need to get rid of these
         canvas3.create_text(206, 379, fill="Black", font="Verdana 13", text="-0.91")
         canvas3.create_text(455, 172, fill="Black", font="Verdana 13", text="-0.11")
         canvas3.create_text(455, 379, fill="Black", font="Verdana 13", text="-0.52")
