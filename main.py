@@ -1,6 +1,5 @@
 from tkinter import ttk
 import tkinter as tk
-from tkinter.scrolledtext import ScrolledText
 import xlrd
 from PIL import Image, ImageTk
 from datetime import datetime
@@ -54,6 +53,7 @@ organizational = round(float(sheet.cell(26,2).value), 2)
 environmental = round(float(sheet.cell(5,2).value), 2)
 behavioural = round(float(sheet.cell(30,2).value), 2)
 health = round(float(sheet.cell(31,2).value), 2)
+overallScore = round(float(45), 2) ## To Do
 
 # environment
 tempImpactSummerScore = round(float(sheet.cell(6,2).value), 2)
@@ -82,6 +82,25 @@ lightImpact = round(float(sheet.cell(24,2).value), 2)
 lightCondition = round(float(sheet.cell(25,2).value), 2) 
 
 tempCondSummerConfidence = round(float(sheet.cell(10,3).value), 2)
+
+# engagement canvas 4
+overallVigor = round(float(sheet.cell(33,2).value), 2)
+excitement = round(float(sheet.cell(34,2).value), 2)
+perseverence = round(float(sheet.cell(35,2).value), 2)
+endurance = round(float(sheet.cell(36,2).value), 2)
+overallDedication = round(float(sheet.cell(37,2).value), 2)
+pride = round(float(sheet.cell(38,2).value), 2)
+enthusiasm = round(float(sheet.cell(39,2).value), 2)
+inspiration = round(float(sheet.cell(40,2).value), 2)
+overallAbsorption = round(float(sheet.cell(41,2).value), 2)
+attachment = round(float(sheet.cell(42,2).value), 2)
+absorption = round(float(sheet.cell(43,2).value), 2)
+immersion = round(float(sheet.cell(44,2).value), 2)
+
+qualityOfWorkScore = round(float(sheet.cell(46,2).value), 2)
+qualityOfWorkConfidence = round(float(sheet.cell(46,3).value), 2)
+volumeOfWorkScore = round(float(sheet.cell(47,2).value), 2)
+volumeOfWorkConfidence = round(float(sheet.cell(47,3).value), 2)
 
 
 class Application(tk.Frame):
@@ -128,7 +147,7 @@ class Application(tk.Frame):
         # [ organizational, environmental, behavioural, engagement, absenteeism, self, org-output, health]
         self.big_brain_graph(canvas1, [organizational,environmental,behavioural,engagement,absenteeism,selfAssessment,orgOutput,health], 50, 50)
         # [overall, presenteeism, engagement, absenteeism, self, org-output]
-        self.menu_big_brain_graph(canvas1, [previousOverallScore,previousPresenteeism,previousEngagement,previousAbsenteeism,previousSelfAssessment,previousOrgOutput], [45,presenteeism,engagement,absenteeism,selfAssessment,orgOutput])
+        self.menu_big_brain_graph(canvas1, [previousOverallScore,previousPresenteeism,previousEngagement,previousAbsenteeism,previousSelfAssessment,previousOrgOutput], [overallScore,presenteeism,engagement,absenteeism,selfAssessment,orgOutput])
         canvas1.create_text(60, 622, fill="Black", font="Verdana 13", text=organizationName, anchor="w")
         canvas1.create_text(180, 640, fill="Black", font="Verdana 8", text=previousDateOfCompletion, anchor="w")
         canvas1.create_text(180, 659, fill="Black", font="Verdana 8", text=currentDate, anchor="w")
@@ -136,11 +155,11 @@ class Application(tk.Frame):
         #canvas 3
         self.show_image(canvas3, 'background3.jpg', 600, 350)
 
-        canvas3.create_text(70, 85, fill="Black", font="Verdana 18 bold", text="78.89", anchor="w")
+        canvas3.create_text(70, 85, fill="Black", font="Verdana 18 bold", text=organizational, anchor="w")
         canvas3.create_text(160, 91, fill="Black", font="Verdana 15 bold", text="/100", anchor="w")
-        canvas3.create_text(611, 85, fill="Black", font="Verdana 18 bold", text="78.89", anchor="w")
+        canvas3.create_text(611, 85, fill="Black", font="Verdana 18 bold", text=behavioural, anchor="w")
         canvas3.create_text(701, 91, fill="Black", font="Verdana 15 bold", text="/100", anchor="w")
-        canvas3.create_text(880, 85, fill="Black", font="Verdana 18 bold", text="78.89", anchor="w")
+        canvas3.create_text(880, 85, fill="Black", font="Verdana 18 bold", text=health, anchor="w")
         canvas3.create_text(970, 91, fill="Black", font="Verdana 15 bold", text="/100", anchor="w")
 
         self.create_graph(canvas3, -0.9, 0.2, 106, 190)
@@ -160,33 +179,33 @@ class Application(tk.Frame):
 
         #canvas 4
         self.show_image(canvas4, 'background4.jpg', 600, 350)
-        canvas4.create_text(70, 71, fill="Black", font="Verdana 15 bold", text="78.89", anchor="w")
+        canvas4.create_text(70, 71, fill="Black", font="Verdana 15 bold", text=engagement, anchor="w")
         canvas4.create_text(140, 77, fill="Black", font="Verdana 13 bold", text="/100", anchor="w")
-        canvas4.create_text(611, 71, fill="Black", font="Verdana 15 bold", text="78.89", anchor="w")
+        canvas4.create_text(611, 71, fill="Black", font="Verdana 15 bold", text=selfAssessment, anchor="w")
         canvas4.create_text(681, 77, fill="Black", font="Verdana 13 bold", text="/100", anchor="w")
-        canvas4.create_text(880, 71, fill="Black", font="Verdana 15 bold", text="78.89", anchor="w")
+        canvas4.create_text(880, 71, fill="Black", font="Verdana 15 bold", text=absenteeism, anchor="w")
         canvas4.create_text(951, 77, fill="Black", font="Verdana 13 bold", text="/100", anchor="w")
-        canvas4.create_text(880, 352, fill="Black", font="Verdana 15 bold", text="78.89", anchor="w")
+        canvas4.create_text(880, 352, fill="Black", font="Verdana 15 bold", text=orgOutput, anchor="w")
         canvas4.create_text(951, 358, fill="Black", font="Verdana 13 bold", text="/100", anchor="w")
 
-        canvas4.create_text(150, 175, fill="Black", font="Verdana 19 bold", text="53.4")
-        canvas4.create_text(329, 175, fill="Black", font="Verdana 19 bold", text="23.4")
-        canvas4.create_text(505, 175, fill="Black", font="Verdana 19 bold", text="78.89")
+        canvas4.create_text(150, 175, fill="Black", font="Verdana 19 bold", text=overallVigor)
+        canvas4.create_text(329, 175, fill="Black", font="Verdana 19 bold", text=overallAbsorption)
+        canvas4.create_text(505, 175, fill="Black", font="Verdana 19 bold", text=overallDedication)
 
-        canvas4.create_text(150, 307, fill="Black", font="Verdana 19", text="28.4")
-        canvas4.create_text(150, 422, fill="Black", font="Verdana 19", text="34.4")
-        canvas4.create_text(150, 536, fill="Black", font="Verdana 19", text="56.89")
+        canvas4.create_text(150, 307, fill="Black", font="Verdana 19", text=excitement)
+        canvas4.create_text(150, 422, fill="Black", font="Verdana 19", text=perseverence)
+        canvas4.create_text(150, 536, fill="Black", font="Verdana 19", text=endurance)
         
-        canvas4.create_text(329, 307, fill="Black", font="Verdana 19", text="28.4")
-        canvas4.create_text(329, 422, fill="Black", font="Verdana 19", text="34.4")
-        canvas4.create_text(329, 536, fill="Black", font="Verdana 19", text="56.89")
+        canvas4.create_text(329, 307, fill="Black", font="Verdana 19", text=pride)
+        canvas4.create_text(329, 422, fill="Black", font="Verdana 19", text=enthusiasm)
+        canvas4.create_text(329, 536, fill="Black", font="Verdana 19", text=inspiration)
         
-        canvas4.create_text(505, 305, fill="Black", font="Verdana 19", text="28.4")
-        canvas4.create_text(505, 422, fill="Black", font="Verdana 19", text="34.4")
-        canvas4.create_text(505, 536, fill="Black", font="Verdana 19", text="56.89")
+        canvas4.create_text(505, 305, fill="Black", font="Verdana 19", text=attachment)
+        canvas4.create_text(505, 422, fill="Black", font="Verdana 19", text=absorption)
+        canvas4.create_text(505, 536, fill="Black", font="Verdana 19", text=immersion)
 
-        self.create_graph(canvas4, 1.11, 0.2, 633, 168)
-        self.create_graph(canvas4, -0.61, 0.1, 633, 346)
+        self.create_graph(canvas4, qualityOfWorkScore, qualityOfWorkConfidence, 633, 168)
+        self.create_graph(canvas4, volumeOfWorkScore, volumeOfWorkConfidence, 633, 346)
         self.create_graph(canvas4, 1.11, 0.2, 905, 103)
         self.create_graph(canvas4, -0.61, 0.1, 905, 384)
 
@@ -310,7 +329,7 @@ class Application(tk.Frame):
             
         canvas.create_text(x_pos + 56.75, y_pos + 60, fill="Black", font="Verdana 18 bold", text=past)
         #canvas.create_text(x_pos + 56.75, y_pos + 80, fill="Black", font="Verdana 8", text='total')
-        canvas.create_text(x_pos + 169.25, y_pos + 60, fill=color, font="Verdana 18 bold", text=delta)
+        canvas.create_text(x_pos + 169.25, y_pos + 60, fill=color, font="Verdana 18 bold", text=round(delta, 2))
         #canvas.create_text(x_pos + 169.25, y_pos + 80, fill="Black", font="Verdana 8", text='delta')
 
     def show_image(self, canvas, filename, x, y):
