@@ -102,6 +102,13 @@ qualityOfWorkConfidence = round(float(sheet.cell(46,3).value), 2)
 volumeOfWorkScore = round(float(sheet.cell(47,2).value), 2)
 volumeOfWorkConfidence = round(float(sheet.cell(47,3).value), 2)
 
+seperationScore = round(float(sheet.cell(46,2).value), 2)
+seperationConfidence = round(float(sheet.cell(47,3).value), 2)
+hierarchyScore = round(float(sheet.cell(46,2).value), 2)
+hierarchyConfidence = round(float(sheet.cell(47,3).value), 2)
+directionScore = round(float(sheet.cell(46,2).value), 2)
+directionConfidence = round(float(sheet.cell(47,3).value), 2)
+
 
 class Application(tk.Frame):
     def __init__(self, master=None):
