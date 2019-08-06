@@ -85,12 +85,20 @@ humidityCondFall = round(float(sheet.cell(21,2).value), 2)
 
 noiseImpact = round(float(sheet.cell(22,2).value), 2)
 noiseCondition = round(float(sheet.cell(23,2).value), 2) 
+noiseConditionConfidence = round(float(sheet.cell(23,3).value), 2) 
 artificialLightImpact = round(float(sheet.cell(24,2).value), 2) 
-artificialLightCondition = round(float(sheet.cell(25,2).value), 2) 
+artificialLightCondition = round(float(sheet.cell(25,2).value), 2)
+artificialLightConditionConfidence = round(float(sheet.cell(25,3).value), 2)
 naturalLightImpact = round(float(sheet.cell(24,2).value), 2) 
 naturalLightCondition = round(float(sheet.cell(25,2).value), 2) # no value in excel, currently a duplicate
+naturalLightConditionConfidence = round(float(sheet.cell(25,3).value), 2)
 
 tempCondSummerConfidence = round(float(sheet.cell(10,3).value), 2)
+tempCondWinterConfidence = round(float(sheet.cell(11,3).value), 2)
+tempCondSpringConfidence = round(float(sheet.cell(12,3).value), 2)
+humidityCondSummerConfidence = round(float(sheet.cell(18,3).value), 2)
+humidityCondWinterConfidence = round(float(sheet.cell(19,3).value), 2)
+humidityCondSpringConfidence = round(float(sheet.cell(20,3).value), 2)
 
 # engagement canvas 4
 overallVigor = round(float(sheet.cell(33,2).value), 2)
@@ -118,6 +126,9 @@ hierarchyConfidence = round(float(sheet.cell(28,3).value), 2)
 directionScore = scaleBetween(round(float(sheet.cell(29,2).value), 2))
 directionConfidence = round(float(sheet.cell(29,3).value), 2)
 
+absenteeismConfidence = round(float(sheet.cell(48,3).value), 2)
+orgOutputConfidence = round(float(sheet.cell(49,3).value), 2)
+
 class Application(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
@@ -128,15 +139,17 @@ class Application(tk.Frame):
         
         # canvas 2
         self.show_image(canvas2, 'background2.jpg', 600, 350)
-        self.create_graph(canvas2, tempCondSummerScore, tempCondSummerConfidence, 95, 266)
-        self.create_graph(canvas2, -0.91, 0.11, 364, 266)
-        self.create_graph(canvas2, -0.11, 0.2, 633, 266)
-        self.create_graph(canvas2, -0.5, 1, 95, 455)
-        self.create_graph(canvas2, 1.11, 0.2, 364, 455)
-        self.create_graph(canvas2, -0.61, 0.1, 633, 455)
-        self.create_graph(canvas2, -0.5, 1, 905, 81)
-        self.create_graph(canvas2, 1.11, 0.2, 905, 266)
-        self.create_graph(canvas2, -0.61, 0.1, 905, 455)
+        self.create_graph(canvas2, humidityCondSummer, humidityCondSummerConfidence, 95, 266)
+        self.create_graph(canvas2, humidityCondWinter, humidityCondWinterConfidence, 364, 266)
+        self.create_graph(canvas2, humidityCondSpring, humidityCondSpringConfidence, 633, 266)
+
+        self.create_graph(canvas2, tempCondSummerScore, tempCondSummerConfidence, 95, 455)
+        self.create_graph(canvas2, tempCondWinterScore, tempCondWinterConfidence, 364, 455)
+        self.create_graph(canvas2, tempCondSpringScore, tempCondSpringConfidence, 633, 455)
+
+        self.create_graph(canvas2, noiseCondition, noiseConditionConfidence, 905, 81)
+        self.create_graph(canvas2, artificialLightCondition, artificialLightConditionConfidence, 905, 266)
+        self.create_graph(canvas2, naturalLightCondition, naturalLightConditionConfidence, 905, 455)
 
         canvas2.create_text(70, 612, fill="Black", font="Verdana 13", text=organizationName, anchor="w")
         canvas2.create_text(70, 132, fill="Black", font="Verdana 40", text=environmental, anchor="sw")
@@ -221,8 +234,8 @@ class Application(tk.Frame):
 
         self.create_graph(canvas4, qualityOfWorkScore, qualityOfWorkConfidence, 633, 168)
         self.create_graph(canvas4, volumeOfWorkScore, volumeOfWorkConfidence, 633, 346)
-        self.create_graph(canvas4, 1.11, 0.2, 905, 103)
-        self.create_graph(canvas4, -0.61, 0.1, 905, 384)
+        self.create_graph(canvas4, scaleBetween(absenteeism), absenteeismConfidence, 905, 103)
+        self.create_graph(canvas4, scaleBetween(orgOutput), orgOutputConfidence, 905, 384)
 
         canvas4.create_text(70, 612, fill="Black", font="Verdana 13", text=organizationName, anchor="w")
         canvas4.create_text(183, 632, fill="Black", font="Verdana 8", text=previousDateOfCompletion, anchor="w")
