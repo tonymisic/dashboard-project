@@ -96,9 +96,11 @@ naturalLightConditionConfidence = round(float(sheet.cell(25,3).value), 2)
 tempCondSummerConfidence = round(float(sheet.cell(10,3).value), 2)
 tempCondWinterConfidence = round(float(sheet.cell(11,3).value), 2)
 tempCondSpringConfidence = round(float(sheet.cell(12,3).value), 2)
+tempCondFallConfidence = round(float(sheet.cell(13,3).value), 2)
 humidityCondSummerConfidence = round(float(sheet.cell(18,3).value), 2)
 humidityCondWinterConfidence = round(float(sheet.cell(19,3).value), 2)
 humidityCondSpringConfidence = round(float(sheet.cell(20,3).value), 2)
+humidityCondFallConfidence = round(float(sheet.cell(21,3).value), 2)
 
 # engagement canvas 4
 overallVigor = round(float(sheet.cell(33,2).value), 2)
@@ -129,6 +131,17 @@ directionConfidence = round(float(sheet.cell(29,3).value), 2)
 absenteeismConfidence = round(float(sheet.cell(48,3).value), 2)
 orgOutputConfidence = round(float(sheet.cell(49,3).value), 2)
 
+unplannedInteractions = 0.51
+teamMorale = 0.51
+relationshipPeers = 0.51
+relationshipSupervisor = 0.51
+relationshipDirectReports = 0.51
+overallProductivity = 0.51
+tasksUsualAbility = 0.51
+
+
+
+
 class Application(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
@@ -139,36 +152,40 @@ class Application(tk.Frame):
         
         # canvas 2
         self.show_image(canvas2, 'background2.jpg', 600, 350)
-        self.create_graph(canvas2, humidityCondSummer, humidityCondSummerConfidence, 95, 266)
-        self.create_graph(canvas2, humidityCondWinter, humidityCondWinterConfidence, 364, 266)
-        self.create_graph(canvas2, humidityCondSpring, humidityCondSpringConfidence, 633, 266)
+        self.create_graph(canvas2, humidityCondSummer, humidityCondSummerConfidence, 41, 266)
+        self.create_graph(canvas2, humidityCondWinter, humidityCondWinterConfidence, 269, 266)
+        self.create_graph(canvas2, humidityCondSpring, humidityCondSpringConfidence, 498, 266)
+        self.create_graph(canvas2, humidityCondFall, humidityCondFallConfidence, 728, 266)
 
-        self.create_graph(canvas2, tempCondSummerScore, tempCondSummerConfidence, 95, 455)
-        self.create_graph(canvas2, tempCondWinterScore, tempCondWinterConfidence, 364, 455)
-        self.create_graph(canvas2, tempCondSpringScore, tempCondSpringConfidence, 633, 455)
+        self.create_graph(canvas2, tempCondSummerScore, tempCondSummerConfidence, 41, 455)
+        self.create_graph(canvas2, tempCondWinterScore, tempCondWinterConfidence, 269, 455)
+        self.create_graph(canvas2, tempCondSpringScore, tempCondSpringConfidence, 498, 455)
+        self.create_graph(canvas2, tempCondFallScore, tempCondFallConfidence, 728, 455)
 
-        self.create_graph(canvas2, noiseCondition, noiseConditionConfidence, 905, 81)
-        self.create_graph(canvas2, artificialLightCondition, artificialLightConditionConfidence, 905, 266)
-        self.create_graph(canvas2, naturalLightCondition, naturalLightConditionConfidence, 905, 455)
+        self.create_graph(canvas2, noiseCondition, noiseConditionConfidence, 959, 81)
+        self.create_graph(canvas2, artificialLightCondition, artificialLightConditionConfidence, 959, 266)
+        self.create_graph(canvas2, naturalLightCondition, naturalLightConditionConfidence, 959, 455)
 
-        canvas2.create_text(70, 612, fill="Black", font="Verdana 13", text=organizationName, anchor="w")
+        canvas2.create_text(50, 612, fill="Black", font="Verdana 13", text=organizationName, anchor="w")
         canvas2.create_text(70, 132, fill="Black", font="Verdana 40", text=environmental, anchor="sw")
         canvas2.create_text(230, 132, fill="Black", font="Verdana 20", text="/100", anchor="sw")
 
-        canvas2.create_text(195, 248, fill="Black", font="Verdana 13", text=humidityImpactSummer) # might need to be labeled better
-        canvas2.create_text(464, 248, fill="Black", font="Verdana 13", text=humidityImpactWinter)
-        canvas2.create_text(733, 248, fill="Black", font="Verdana 13", text=humidityImpactSpring) # might need to average
+        canvas2.create_text(141, 248, fill="Black", font="Verdana 13", text=humidityImpactSummer)
+        canvas2.create_text(369, 248, fill="Black", font="Verdana 13", text=humidityImpactWinter)
+        canvas2.create_text(598, 248, fill="Black", font="Verdana 13", text=humidityImpactSpring)
+        canvas2.create_text(828, 248, fill="Black", font="Verdana 13", text=humidityImpactFall) 
 
-        canvas2.create_text(195, 437, fill="Black", font="Verdana 13", text=tempImpactSummerScore)
-        canvas2.create_text(464, 437, fill="Black", font="Verdana 13", text=tempImpactWinterScore)
-        canvas2.create_text(733, 437, fill="Black", font="Verdana 13", text=tempImpactSpringScore)
+        canvas2.create_text(141, 437, fill="Black", font="Verdana 13", text=tempImpactSummerScore)
+        canvas2.create_text(369, 437, fill="Black", font="Verdana 13", text=tempImpactWinterScore)
+        canvas2.create_text(598, 437, fill="Black", font="Verdana 13", text=tempImpactSpringScore)
+        canvas2.create_text(828, 437, fill="Black", font="Verdana 13", text=tempImpactFallScore)
 
-        canvas2.create_text(1005, 63, fill="Black", font="Verdana 13", text=noiseImpact)
-        canvas2.create_text(1005, 248, fill="Black", font="Verdana 13", text=artificialLightImpact)
-        canvas2.create_text(1005, 437, fill="Black", font="Verdana 13", text=naturalLightImpact)
+        canvas2.create_text(1059, 63, fill="Black", font="Verdana 13", text=noiseImpact)
+        canvas2.create_text(1059, 248, fill="Black", font="Verdana 13", text=artificialLightImpact)
+        canvas2.create_text(1059, 437, fill="Black", font="Verdana 13", text=naturalLightImpact)
 
-        canvas2.create_text(183, 632, fill="Black", font="Verdana 8", text=previousDateOfCompletion, anchor="w")
-        canvas2.create_text(183, 650, fill="Black", font="Verdana 8", text=currentDate, anchor="w")
+        canvas2.create_text(183, 632, fill="Black", font="Verdana 8", text=currentDate, anchor="w")
+        canvas2.create_text(183, 650, fill="Black", font="Verdana 8", text=previousDateOfCompletion, anchor="w")
 
         # canvas 1 DONE
         self.show_image(canvas1, 'background1.jpg', 600, 375)
@@ -177,33 +194,42 @@ class Application(tk.Frame):
         # [overall, presenteeism, engagement, absenteeism, self, org-output]
         self.menu_big_brain_graph(canvas1, [previousOverallScore,previousPresenteeism,previousEngagement,previousAbsenteeism,previousSelfAssessment,previousOrgOutput], [overallScore,presenteeism,engagement,absenteeism,selfAssessment,orgOutput])
         canvas1.create_text(60, 622, fill="Black", font="Verdana 13", text=organizationName, anchor="w")
-        canvas1.create_text(180, 640, fill="Black", font="Verdana 8", text=previousDateOfCompletion, anchor="w")
-        canvas1.create_text(180, 659, fill="Black", font="Verdana 8", text=currentDate, anchor="w")
+        canvas1.create_text(180, 640, fill="Black", font="Verdana 8", text=currentDate, anchor="w")
+        canvas1.create_text(180, 659, fill="Black", font="Verdana 8", text=previousDateOfCompletion, anchor="w")
         
         #canvas 3
         self.show_image(canvas3, 'background3.jpg', 600, 350)
 
-        canvas3.create_text(70, 85, fill="Black", font="Verdana 18 bold", text=organizational, anchor="w")
-        canvas3.create_text(160, 91, fill="Black", font="Verdana 15 bold", text="/100", anchor="w")
-        canvas3.create_text(611, 85, fill="Black", font="Verdana 18 bold", text=behavioural, anchor="w")
-        canvas3.create_text(701, 91, fill="Black", font="Verdana 15 bold", text="/100", anchor="w")
-        canvas3.create_text(880, 85, fill="Black", font="Verdana 18 bold", text=health, anchor="w")
-        canvas3.create_text(970, 91, fill="Black", font="Verdana 15 bold", text="/100", anchor="w")
+        canvas3.create_text(70, 70, fill="Black", font="Verdana 18 bold", text=organizational, anchor="w")
+        canvas3.create_text(160, 76, fill="Black", font="Verdana 15 bold", text="/100", anchor="w")
+        canvas3.create_text(611, 70, fill="Black", font="Verdana 18 bold", text=behavioural, anchor="w")
+        canvas3.create_text(701, 76, fill="Black", font="Verdana 15 bold", text="/100", anchor="w")
+        canvas3.create_text(880, 70, fill="Black", font="Verdana 18 bold", text=health, anchor="w")
+        canvas3.create_text(970, 76, fill="Black", font="Verdana 15 bold", text="/100", anchor="w")
 
-        self.create_graph(canvas3, seperationScore, seperationConfidence, 106, 190)
-        self.create_graph(canvas3, directionScore, directionConfidence, 106, 398)
-        self.create_graph(canvas3, hierarchyScore, hierarchyConfidence, 351, 190)
-        self.create_graph(canvas3, -0.61, 0.1, 351, 398) # not sure if we need this
-        self.create_graph(canvas3, scaleBetween(behavioural), behaviouralConfidence, 633, 190)
-        self.create_graph(canvas3, scaleBetween(health), healthConfidence, 905, 190)
-        
-        canvas3.create_text(206, 172, fill="Black", font="Verdana 13", text="1.08") # need to get rid of these
-        canvas3.create_text(206, 379, fill="Black", font="Verdana 13", text="-0.91")
-        canvas3.create_text(455, 172, fill="Black", font="Verdana 13", text="-0.11")
-        canvas3.create_text(455, 379, fill="Black", font="Verdana 13", text="-0.52")
+        self.create_graph(canvas3, seperationScore, seperationConfidence, 106, 170)
+        self.create_graph(canvas3, directionScore, directionConfidence, 106, 378)
+        self.create_graph(canvas3, hierarchyScore, hierarchyConfidence, 351, 170)
+        self.create_graph(canvas3, scaleBetween(behavioural), behaviouralConfidence, 633, 116)
+        self.create_graph(canvas3, scaleBetween(health), healthConfidence, 905, 116)
+    
+        canvas3.create_text(455, 408, fill="Black", font="Verdana 15", text="-0.52")
         canvas3.create_text(70, 612, fill="Black", font="Verdana 13", text=organizationName, anchor="w")
-        canvas3.create_text(183, 632, fill="Black", font="Verdana 8", text=previousDateOfCompletion, anchor="w")
-        canvas3.create_text(183, 650, fill="Black", font="Verdana 8", text=currentDate, anchor="w")
+        canvas3.create_text(183, 632, fill="Black", font="Verdana 8", text=currentDate, anchor="w")
+        canvas3.create_text(183, 650, fill="Black", font="Verdana 8", text=previousDateOfCompletion, anchor="w")
+
+        canvas3.create_text(667, 318, fill="Black", font="Verdana 16", text=tasksUsualAbility)
+        canvas3.create_text(799, 318, fill="Black", font="Verdana 16", text=tasksUsualAbility)
+        canvas3.create_text(667, 408, fill="Black", font="Verdana 16", text=tasksUsualAbility)
+        canvas3.create_text(799, 408, fill="Black", font="Verdana 16", text=tasksUsualAbility)
+        canvas3.create_text(667, 498, fill="Black", font="Verdana 16", text=tasksUsualAbility)
+
+        canvas3.create_text(936, 318, fill="Black", font="Verdana 16", text=tasksUsualAbility)
+        canvas3.create_text(1067, 318, fill="Black", font="Verdana 16", text=tasksUsualAbility)
+        canvas3.create_text(936, 408, fill="Black", font="Verdana 16", text=tasksUsualAbility)
+        canvas3.create_text(1067, 408, fill="Black", font="Verdana 16", text=tasksUsualAbility)
+        canvas3.create_text(936, 498, fill="Black", font="Verdana 16", text=tasksUsualAbility)
+        canvas3.create_text(1067, 498, fill="Black", font="Verdana 16", text=tasksUsualAbility)
 
         #canvas 4
         self.show_image(canvas4, 'background4.jpg', 600, 350)
@@ -238,8 +264,8 @@ class Application(tk.Frame):
         self.create_graph(canvas4, scaleBetween(orgOutput), orgOutputConfidence, 905, 384)
 
         canvas4.create_text(70, 612, fill="Black", font="Verdana 13", text=organizationName, anchor="w")
-        canvas4.create_text(183, 632, fill="Black", font="Verdana 8", text=previousDateOfCompletion, anchor="w")
-        canvas4.create_text(183, 650, fill="Black", font="Verdana 8", text=currentDate, anchor="w")
+        canvas4.create_text(183, 632, fill="Black", font="Verdana 8", text=currentDate, anchor="w")
+        canvas4.create_text(183, 650, fill="Black", font="Verdana 8", text=previousDateOfCompletion, anchor="w")
         
     def create_graph(self, canvas, median, stdvt, x_pos, y_pos): # median: where arrow is pointing, stdvt: standard deviation
         size = 200
