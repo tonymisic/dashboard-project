@@ -90,7 +90,7 @@ artificialLightImpact = round(float(sheet.cell(24,2).value), 2)
 artificialLightCondition = round(float(sheet.cell(25,2).value), 2)
 artificialLightConditionConfidence = round(float(sheet.cell(25,3).value), 2)
 naturalLightImpact = round(float(sheet.cell(24,2).value), 2) 
-naturalLightCondition = round(float(sheet.cell(25,2).value), 2) # no value in excel, currently a duplicate
+naturalLightCondition = round(float(sheet.cell(25,2).value), 2)
 naturalLightConditionConfidence = round(float(sheet.cell(25,3).value), 2)
 
 tempCondSummerConfidence = round(float(sheet.cell(10,3).value), 2)
@@ -131,16 +131,20 @@ directionConfidence = round(float(sheet.cell(29,3).value), 2)
 absenteeismConfidence = round(float(sheet.cell(48,3).value), 2)
 orgOutputConfidence = round(float(sheet.cell(49,3).value), 2)
 
-unplannedInteractions = 0.51
-teamMorale = 0.51
-relationshipPeers = 0.51
-relationshipSupervisor = 0.51
-relationshipDirectReports = 0.51
-overallProductivity = 0.51
-tasksUsualAbility = 0.51
+unplannedInteractions = round(float(sheet.cell(58,2).value), 2)
+teamMorale = round(float(sheet.cell(59,2).value), 2)
+relationshipPeers = round(float(sheet.cell(60,2).value), 2)
+relationshipSupervisor = round(float(sheet.cell(61,2).value), 2)
+relationshipDirectReports = round(float(sheet.cell(62,2).value), 2)
 
+overallProductivity = round(float(sheet.cell(51,2).value), 2)
+tasksUsualAbility = round(float(sheet.cell(52,2).value), 2)
+pleasureInWork = round(float(sheet.cell(53,2).value), 2)
+focusGoals = round(float(sheet.cell(54,2).value), 2)
+energyCompleteWork = round(float(sheet.cell(55,2).value), 2)
+confWorkingTasks = round(float(sheet.cell(56,2).value), 2)
 
-
+officeLayout = round(float(sheet.cell(63,2).value), 2)
 
 class Application(tk.Frame):
     def __init__(self, master=None):
@@ -213,23 +217,23 @@ class Application(tk.Frame):
         self.create_graph(canvas3, scaleBetween(behavioural), behaviouralConfidence, 633, 116)
         self.create_graph(canvas3, scaleBetween(health), healthConfidence, 905, 116)
     
-        canvas3.create_text(455, 408, fill="Black", font="Verdana 15", text="-0.52")
+        canvas3.create_text(455, 408, fill="Black", font="Verdana 15", text=officeLayout)
         canvas3.create_text(70, 612, fill="Black", font="Verdana 13", text=organizationName, anchor="w")
         canvas3.create_text(183, 632, fill="Black", font="Verdana 8", text=currentDate, anchor="w")
         canvas3.create_text(183, 650, fill="Black", font="Verdana 8", text=previousDateOfCompletion, anchor="w")
 
-        canvas3.create_text(667, 318, fill="Black", font="Verdana 16", text=tasksUsualAbility)
-        canvas3.create_text(799, 318, fill="Black", font="Verdana 16", text=tasksUsualAbility)
-        canvas3.create_text(667, 408, fill="Black", font="Verdana 16", text=tasksUsualAbility)
-        canvas3.create_text(799, 408, fill="Black", font="Verdana 16", text=tasksUsualAbility)
-        canvas3.create_text(667, 498, fill="Black", font="Verdana 16", text=tasksUsualAbility)
+        canvas3.create_text(667, 318, fill="Black", font="Verdana 16", text=unplannedInteractions)
+        canvas3.create_text(799, 318, fill="Black", font="Verdana 16", text=teamMorale)
+        canvas3.create_text(667, 408, fill="Black", font="Verdana 16", text=relationshipPeers)
+        canvas3.create_text(799, 408, fill="Black", font="Verdana 16", text=relationshipSupervisor)
+        canvas3.create_text(667, 498, fill="Black", font="Verdana 16", text=relationshipDirectReports)
 
-        canvas3.create_text(936, 318, fill="Black", font="Verdana 16", text=tasksUsualAbility)
+        canvas3.create_text(936, 318, fill="Black", font="Verdana 16", text=overallProductivity)
         canvas3.create_text(1067, 318, fill="Black", font="Verdana 16", text=tasksUsualAbility)
-        canvas3.create_text(936, 408, fill="Black", font="Verdana 16", text=tasksUsualAbility)
-        canvas3.create_text(1067, 408, fill="Black", font="Verdana 16", text=tasksUsualAbility)
-        canvas3.create_text(936, 498, fill="Black", font="Verdana 16", text=tasksUsualAbility)
-        canvas3.create_text(1067, 498, fill="Black", font="Verdana 16", text=tasksUsualAbility)
+        canvas3.create_text(936, 408, fill="Black", font="Verdana 16", text=pleasureInWork)
+        canvas3.create_text(1067, 408, fill="Black", font="Verdana 16", text=focusGoals)
+        canvas3.create_text(936, 498, fill="Black", font="Verdana 16", text=energyCompleteWork)
+        canvas3.create_text(1067, 498, fill="Black", font="Verdana 16", text=confWorkingTasks)
 
         #canvas 4
         self.show_image(canvas4, 'background4.jpg', 600, 350)
